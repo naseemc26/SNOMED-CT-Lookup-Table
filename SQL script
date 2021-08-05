@@ -1,7 +1,84 @@
 /******************************************************************************************************************************************/
 /* Structured query language (SQL) script for combining the prostate biopsy dataset and Systematised Nomenclature of Medicine (SNOMED)    */
 /* Clinical Terms (CT) datasets and developed lookup tables. Thise code mujst be used in combination with Figure 3 for a publication at   */
-/* the African Journal of Laboratory Medicine (AJLM):  https://doi.org/10.4102/ajlm.v9i1.909 
+/* the African Journal of Laboratory Medicine (AJLM): DOI: https://doi.org/10.4102/ajlm.v9i1.909 
 /******************************************************************************************************************************************/
 
+/*****************************************************************************************************************************************/
+/* This code is divided into three seperate queries                                                                                      */
+/* Step One: Join M code dataset with lookup tables variables                                                                            */
+/* Step Two: Join T code dataset with lookup tables variables                                                                            */
+/* Step Three: Combine all three datasets with the M and T lookup table variables populated                                              */
+/*****************************************************************************************************************************************/
+
+/*************************************************************/
 /* Step One: Join M code dataset with lookup tables variables*/
+/*************************************************************/
+
+Create table M_Data_lkup as
+
+Select
+a.episode_num_m,
+a.m_code_lk,
+b.m_description,
+b.diagnosis,
+b.sub_diagnosis,
+b.sub_diagnosis_ICD03,
+b.sub_result
+
+From m_data as a
+left join M_Lookup as b
+on a.m_code_lk = b.m_code_lk
+
+/*************************************************************/
+/* Step Two: Join T code dataset with lookup table variables*/
+/*************************************************************/
+
+Create table T_Data_lkup as
+
+Select
+
+a.episode_num_t,
+a.t_code_lk,
+b.T_code_description
+b.organ,
+b.organ_ICD03
+
+From t_data as a
+left join T_Lookup as b
+on a.t_code_lk = b.t_code_lk
+
+/*************************************************************/
+/* Step Three: Combine datasets                              */
+/*************************************************************/
+
+Create table prostate_data_comb as
+
+Select 
+a.episode_no,
+a.upid,
+a.age,
+a.gender,
+a.race,
+a.fac_code,
+a.fac_description,
+a.review_date,
+a.result_text,
+
+b.m_code_lk,
+b.m_description,
+b.diagnosis,
+b.sub_diagnosis,
+b.sub_diagnosis_ICD03,
+b.sub_result,
+
+c.t_code_lk,
+c.t_code_description
+c.organ,
+c.organ_ICD03
+
+From prostate_data as a
+left join M_Data_lkup as b on a.episode_no = b.episode_num_m
+left join T_Data_lkup as c on a.episode_no = c.episode_num_t
+
+
