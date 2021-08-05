@@ -1,7 +1,7 @@
 /******************************************************************************************************************************************/
 /* Structured query language (SQL) script for combining the prostate biopsy dataset and Systematised Nomenclature of Medicine (SNOMED)    */
 /* Clinical Terms (CT) datasets and developed lookup tables. Thise code mujst be used in combination with Figure 3 for a publication at   */
-/* the African Journal of Laboratory Medicine (AJLM): DOI: https://doi.org/10.4102/ajlm.v9i1.909 
+/* the African Journal of Laboratory Medicine (AJLM): DOI: https://doi.org/10.4102/ajlm.v9i1.909                                          */
 /******************************************************************************************************************************************/
 
 /*****************************************************************************************************************************************/
